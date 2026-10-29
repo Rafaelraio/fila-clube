@@ -94,10 +94,10 @@
   <div id="aviso" class="aviso" hidden></div>
   <div id="conteudo"><div class="vazio">Carregando a fila da semana…</div></div>
   <div class="rodape">
-    Horários de São Paulo. <span id="atualizado"></span><br>
+    Horários de São Paulo. <span id="atualizado"></span> Versão do app: <b id="versao">3</b><br>
     <button id="btn-notif" hidden>Ativar avisos neste celular</button>
     <button id="btn-instalar" hidden>Instalar no celular</button>
-    <button id="btn-recarregar">Atualizar</button>
+    <button id="btn-recarregar">Atualizar app</button>
     <div id="caixa-push" class="aviso" hidden style="text-align:left; margin-top:12px">
       <b id="push-titulo">Avisos</b><br>
       Copie este código e cole no chat com o Claude (ou mande para quem cuida do site). Com ele cadastrado, os avisos chegam na hora certa mesmo com o app fechado e o computador desligado.
@@ -247,7 +247,10 @@
     render();
     agendarAvisos();
   }
-  document.getElementById('btn-recarregar').addEventListener('click', carregar);
+  document.getElementById('btn-recarregar').addEventListener('click', async function () {
+    try { var reg = await navigator.serviceWorker.getRegistration(); if (reg) await reg.update(); } catch (e) {}
+    location.reload();
+  });
 
   // avisos push: o celular se inscreve aqui; quem dispara é o robô do GitHub (avisos/avisos.py), sem depender do Mac
   var VAPID_PUBLIC = 'BAbD0vM6it10ppNnmteyUL-1HtCcAFfkCKCehP-tf72LnKyqk0RBWJj_bRJVOWRxZNnpZhnt8XeXArBBFKxcKss';
