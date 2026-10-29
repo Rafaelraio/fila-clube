@@ -98,6 +98,9 @@
     <button id="btn-notif" hidden>Avisar neste aparelho</button>
     <button id="btn-instalar" hidden>Instalar no celular</button>
     <button id="btn-recarregar">Atualizar</button>
+    <div id="dica-instalar" class="aviso" hidden style="text-align:left; margin-top:12px">
+      <b>Se a instalação der erro:</b> toque nos três pontos do Chrome (canto superior direito) e escolha <b>"Adicionar à tela inicial"</b> ou <b>"Instalar app"</b>. Se o Chrome reclamar de versão antiga, atualize o Chrome e o Google Play Services na Play Store. O site funciona igual sem instalar: salve um atalho e o botão Compartilhar continua mandando imagem e texto para o WhatsApp.
+    </div>
   </div>
 </main>
 <div class="toast" id="toast" role="status"></div>
@@ -253,9 +256,19 @@
     });
   }
 
-  var deferred = null, bi = document.getElementById('btn-instalar');
+  var deferred = null, bi = document.getElementById('btn-instalar'), dica = document.getElementById('dica-instalar');
+  var instalado = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+  if (!instalado) { bi.hidden = false; }
   window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; bi.hidden = false; });
-  bi.addEventListener('click', function () { if (deferred) { deferred.prompt(); deferred = null; bi.hidden = true; } });
+  window.addEventListener('appinstalled', function () { bi.hidden = true; dica.hidden = true; toast('Instalado'); });
+  bi.addEventListener('click', async function () {
+    if (deferred) {
+      try { deferred.prompt(); var r = await deferred.userChoice; deferred = null; if (r && r.outcome === 'accepted') { bi.hidden = true; return; } }
+      catch (e) { deferred = null; }
+    }
+    dica.hidden = false;
+    toast('Use o menu do Chrome para adicionar');
+  });
   if ('serviceWorker' in navigator) { try { navigator.serviceWorker.register('sw.js'); } catch (e) {} }
   window.addEventListener('hashchange', render);
   carregar();
