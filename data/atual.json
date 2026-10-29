@@ -1,6 +1,6 @@
 {
  "semana": "2026-W44",
- "gerado_em": "2026-10-29T00:13-03:00",
+ "gerado_em": "2026-10-29T01:17-03:00",
  "fuso": "America/Sao_Paulo",
  "itens": [
   {
@@ -19,8 +19,29 @@
     "img/2026-W44/2026-10-29-grade-super-story.png"
    ],
    "principais": [
+    "Bomb PKO",
     "Explore WS3P",
-    "Mega PKO"
+    "Mega PKO",
+    "Kombat Mistery"
+   ]
+  },
+  {
+   "id": "2026-10-29-lembrete-super-15h",
+   "tipo": "lembrete",
+   "clube": "super",
+   "clube_nome": "Grupo UP",
+   "data": "2026-10-29",
+   "enviar_as": "14:00",
+   "hora_torneio": "15h",
+   "titulo": "Bomb PKO 25K · 15h · Grupo UP",
+   "resumo": "Começa às 15h",
+   "texto_whatsapp": "⏰ FALTA 1 HORA, FAMÍLIA!\n\n🏆 Bomb PKO ∘ 25K garantidos\n🕗 Hoje às 15h no Grupo UP (ID do clube 50550 ∘ Agente 9644471)\n💰 Buy-in 150 ∘ Rebuy 150\n\nBora buscar essa! 👊🏻",
+   "legenda_instagram": "",
+   "imagens": [
+    "img/2026-W44/2026-10-29-lembrete-super-15h.png"
+   ],
+   "principais": [
+    "Bomb PKO"
    ]
   },
   {
@@ -62,6 +83,25 @@
    ]
   },
   {
+   "id": "2026-10-29-lembrete-super-22h",
+   "tipo": "lembrete",
+   "clube": "super",
+   "clube_nome": "Grupo UP",
+   "data": "2026-10-29",
+   "enviar_as": "21:00",
+   "hora_torneio": "22h",
+   "titulo": "Kombat Mistery 20K · 22h · Grupo UP",
+   "resumo": "Começa às 22h",
+   "texto_whatsapp": "⏰ FALTA 1 HORA, FAMÍLIA!\n\n🏆 Kombat Mistery ∘ 20K garantidos\n🕗 Hoje às 22h no Grupo UP (ID do clube 50550 ∘ Agente 9644471)\n💰 Buy-in 50 ∘ Rebuy 50\n\nBora buscar essa! 👊🏻",
+   "legenda_instagram": "",
+   "imagens": [
+    "img/2026-W44/2026-10-29-lembrete-super-22h.png"
+   ],
+   "principais": [
+    "Kombat Mistery"
+   ]
+  },
+  {
    "id": "2026-10-30-grade-super",
    "tipo": "grade",
    "clube": "super",
@@ -78,7 +118,9 @@
    ],
    "principais": [
     "Titan PKO",
-    "TNT PKO"
+    "Golden PKO",
+    "TNT PKO",
+    "Kombat Mistery"
    ]
   },
   {
@@ -101,6 +143,25 @@
    ]
   },
   {
+   "id": "2026-10-30-lembrete-super-18h",
+   "tipo": "lembrete",
+   "clube": "super",
+   "clube_nome": "Grupo UP",
+   "data": "2026-10-30",
+   "enviar_as": "17:00",
+   "hora_torneio": "18h",
+   "titulo": "Golden PKO 12,5K · 18h · Grupo UP",
+   "resumo": "Começa às 18h",
+   "texto_whatsapp": "⏰ FALTA 1 HORA, FAMÍLIA!\n\n🏆 Golden PKO ∘ 12,5K garantidos\n🕗 Hoje às 18h no Grupo UP (ID do clube 50550 ∘ Agente 9644471)\n💰 Buy-in 50 ∘ Rebuy 50\n\nBora buscar essa! 👊🏻",
+   "legenda_instagram": "",
+   "imagens": [
+    "img/2026-W44/2026-10-30-lembrete-super-18h.png"
+   ],
+   "principais": [
+    "Golden PKO"
+   ]
+  },
+  {
    "id": "2026-10-30-lembrete-super-20h",
    "tipo": "lembrete",
    "clube": "super",
@@ -120,6 +181,25 @@
    ]
   },
   {
+   "id": "2026-10-30-lembrete-super-22h",
+   "tipo": "lembrete",
+   "clube": "super",
+   "clube_nome": "Grupo UP",
+   "data": "2026-10-30",
+   "enviar_as": "21:00",
+   "hora_torneio": "22h",
+   "titulo": "Kombat Mistery 18K · 22h · Grupo UP",
+   "resumo": "Começa às 22h",
+   "texto_whatsapp": "⏰ FALTA 1 HORA, FAMÍLIA!\n\n🏆 Kombat Mistery ∘ 18K garantidos\n🕗 Hoje às 22h no Grupo UP (ID do clube 50550 ∘ Agente 9644471)\n💰 Buy-in 50 ∘ Rebuy 50\n\nBora buscar essa! 👊🏻",
+   "legenda_instagram": "",
+   "imagens": [
+    "img/2026-W44/2026-10-30-lembrete-super-22h.png"
+   ],
+   "principais": [
+    "Kombat Mistery"
+   ]
+  },
+  {
    "id": "2026-10-31-grade-super",
    "tipo": "grade",
    "clube": "super",
@@ -135,7 +215,48 @@
     "img/2026-W44/2026-10-31-grade-super-story.png"
    ],
    "principais": [
-    "Tyson"
+    "Stellar PKO",
+    "Poker Mistery",
+    "Tyson",
+    "Kombat Mistery"
+   ]
+  },
+  {
+   "id": "2026-10-31-lembrete-super-15h",
+   "tipo": "lembrete",
+   "clube": "super",
+   "clube_nome": "Grupo UP",
+   "data": "2026-10-31",
+   "enviar_as": "14:00",
+   "hora_torneio": "15h",
+   "titulo": "Stellar PKO 20K · 15h · Grupo UP",
+   "resumo": "Começa às 15h",
+   "texto_whatsapp": "⏰ FALTA 1 HORA, FAMÍLIA!\n\n🏆 Stellar PKO ∘ 20K garantidos\n🕗 Hoje às 15h no Grupo UP (ID do clube 50550 ∘ Agente 9644471)\n💰 Buy-in 150 ∘ Rebuy 150\n\nBora buscar essa! 👊🏻",
+   "legenda_instagram": "",
+   "imagens": [
+    "img/2026-W44/2026-10-31-lembrete-super-15h.png"
+   ],
+   "principais": [
+    "Stellar PKO"
+   ]
+  },
+  {
+   "id": "2026-10-31-lembrete-super-18h",
+   "tipo": "lembrete",
+   "clube": "super",
+   "clube_nome": "Grupo UP",
+   "data": "2026-10-31",
+   "enviar_as": "17:00",
+   "hora_torneio": "18h",
+   "titulo": "Poker Mistery 15K · 18h · Grupo UP",
+   "resumo": "Começa às 18h",
+   "texto_whatsapp": "⏰ FALTA 1 HORA, FAMÍLIA!\n\n🏆 Poker Mistery ∘ 15K garantidos\n🕗 Hoje às 18h no Grupo UP (ID do clube 50550 ∘ Agente 9644471)\n💰 Buy-in 50 ∘ Rebuy 50\n\nBora buscar essa! 👊🏻",
+   "legenda_instagram": "",
+   "imagens": [
+    "img/2026-W44/2026-10-31-lembrete-super-18h.png"
+   ],
+   "principais": [
+    "Poker Mistery"
    ]
   },
   {
@@ -158,6 +279,25 @@
    ]
   },
   {
+   "id": "2026-10-31-lembrete-super-22h",
+   "tipo": "lembrete",
+   "clube": "super",
+   "clube_nome": "Grupo UP",
+   "data": "2026-10-31",
+   "enviar_as": "21:00",
+   "hora_torneio": "22h",
+   "titulo": "Kombat Mistery 10K · 22h · Grupo UP",
+   "resumo": "Começa às 22h",
+   "texto_whatsapp": "⏰ FALTA 1 HORA, FAMÍLIA!\n\n🏆 Kombat Mistery ∘ 10K garantidos\n🕗 Hoje às 22h no Grupo UP (ID do clube 50550 ∘ Agente 9644471)\n💰 Buy-in 50 ∘ Rebuy 50\n\nBora buscar essa! 👊🏻",
+   "legenda_instagram": "",
+   "imagens": [
+    "img/2026-W44/2026-10-31-lembrete-super-22h.png"
+   ],
+   "principais": [
+    "Kombat Mistery"
+   ]
+  },
+  {
    "id": "2026-11-01-grade-super",
    "tipo": "grade",
    "clube": "super",
@@ -175,6 +315,7 @@
    "principais": [
     "Main Event",
     "Bounty PKO",
+    "Fairplay",
     "Sunday HR"
    ]
   },
@@ -214,6 +355,25 @@
    ],
    "principais": [
     "Bounty PKO"
+   ]
+  },
+  {
+   "id": "2026-11-01-lembrete-super-18h",
+   "tipo": "lembrete",
+   "clube": "super",
+   "clube_nome": "Grupo UP",
+   "data": "2026-11-01",
+   "enviar_as": "17:00",
+   "hora_torneio": "18h",
+   "titulo": "Fairplay 25K · 18h · Grupo UP",
+   "resumo": "Começa às 18h",
+   "texto_whatsapp": "⏰ FALTA 1 HORA, FAMÍLIA!\n\n🏆 Fairplay ∘ 25K garantidos\n🕗 Hoje às 18h no Grupo UP (ID do clube 50550 ∘ Agente 9644471)\n💰 Buy-in 40 ∘ Rebuy 40 ∘ Addon 60\n\nBora buscar essa! 👊🏻",
+   "legenda_instagram": "",
+   "imagens": [
+    "img/2026-W44/2026-11-01-lembrete-super-18h.png"
+   ],
+   "principais": [
+    "Fairplay"
    ]
   },
   {
