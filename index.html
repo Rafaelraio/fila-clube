@@ -95,9 +95,15 @@
   <div id="conteudo"><div class="vazio">Carregando a fila da semana…</div></div>
   <div class="rodape">
     Horários de São Paulo. <span id="atualizado"></span><br>
-    <button id="btn-notif" hidden>Avisar neste aparelho</button>
+    <button id="btn-notif" hidden>Ativar avisos neste celular</button>
     <button id="btn-instalar" hidden>Instalar no celular</button>
     <button id="btn-recarregar">Atualizar</button>
+    <div id="caixa-push" class="aviso" hidden style="text-align:left; margin-top:12px">
+      <b id="push-titulo">Avisos</b><br>
+      Copie este código e cole no chat com o Claude (ou mande para quem cuida do site). Com ele cadastrado, os avisos chegam na hora certa mesmo com o app fechado e o computador desligado.
+      <textarea id="push-json" readonly rows="3" style="width:100%; margin-top:8px; background:#000; color:#CFC5A8; border:1px solid #2A2619; border-radius:8px; font-size:11px; padding:8px"></textarea>
+      <button id="btn-copiar-push" class="btn sec" style="margin-top:8px; width:100%">Copiar código</button>
+    </div>
     <div id="dica-instalar" class="aviso" hidden style="text-align:left; margin-top:12px">
       <b>Se a instalação der erro:</b> toque nos três pontos do Chrome (canto superior direito) e escolha <b>"Adicionar à tela inicial"</b> ou <b>"Instalar app"</b>. Se o Chrome reclamar de versão antiga, atualize o Chrome e o Google Play Services na Play Store. O site funciona igual sem instalar: salve um atalho e o botão Compartilhar continua mandando imagem e texto para o WhatsApp.
     </div>
@@ -243,9 +249,30 @@
   }
   document.getElementById('btn-recarregar').addEventListener('click', carregar);
 
-  // avisos locais enquanto a página estiver aberta (o Telegram cobre o resto)
-  var bn = document.getElementById('btn-notif');
-  if ('Notification' in window) { bn.hidden = Notification.permission === 'granted'; bn.addEventListener('click', async function () { var p = await Notification.requestPermission(); bn.hidden = p === 'granted'; agendarAvisos(); }); }
+  // avisos push: o celular se inscreve aqui; quem dispara é o robô do GitHub (avisos/avisos.py), sem depender do Mac
+  var VAPID_PUBLIC = 'BAbD0vM6it10ppNnmteyUL-1HtCcAFfkCKCehP-tf72LnKyqk0RBWJj_bRJVOWRxZNnpZhnt8XeXArBBFKxcKss';
+  var bn = document.getElementById('btn-notif'), caixa = document.getElementById('caixa-push');
+  function b64ToU8(str) { var pad = '='.repeat((4 - str.length % 4) % 4); var bin = atob((str + pad).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(bin, function (c) { return c.charCodeAt(0); }); }
+  function mostraCodigo(json, novo) { caixa.hidden = false; document.getElementById('push-json').value = json; document.getElementById('push-titulo').textContent = novo ? 'Avisos quase prontos: falta cadastrar este celular' : 'Este celular já tem código de avisos'; }
+  async function ativarAvisos() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) { toast('Este navegador não tem avisos push. Use o Chrome.'); return; }
+    var p = await Notification.requestPermission();
+    if (p !== 'granted') { toast('Sem permissão de notificação'); return; }
+    try {
+      var reg = await navigator.serviceWorker.ready;
+      var sub = await reg.pushManager.getSubscription();
+      var novo = !sub;
+      if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(VAPID_PUBLIC) });
+      var json = JSON.stringify(sub.toJSON());
+      gravar('push_sub', json); mostraCodigo(json, novo); agendarAvisos();
+      if (novo) toast('Copie o código e mande para o Claude');
+    } catch (e) { toast('Não deu para ativar: ' + (e && e.message || e)); }
+  }
+  if ('Notification' in window) {
+    bn.hidden = false; bn.addEventListener('click', ativarAvisos);
+    if (ler('push_sub', null) && Notification.permission === 'granted') bn.textContent = 'Avisos: ver código';
+  }
+  document.getElementById('btn-copiar-push').addEventListener('click', function () { copiar(document.getElementById('push-json').value); });
   var timers = [];
   function agendarAvisos() {
     timers.forEach(clearTimeout); timers = [];

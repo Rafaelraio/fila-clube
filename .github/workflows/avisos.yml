@@ -1,0 +1,46 @@
+name: avisos
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    inputs:
+      hora:
+        description: 'Forçar hora de São Paulo (HH), opcional'
+        required: false
+      teste:
+        description: 'Mandar notificação de teste (1)'
+        required: false
+permissions:
+  contents: read
+concurrency:
+  group: avisos
+  cancel-in-progress: false
+jobs:
+  avisos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q "pywebpush>=1.14,<3"
+      - uses: actions/cache/restore@v4
+        with:
+          path: .avisos-estado
+          key: avisos-${{ github.run_id }}
+          restore-keys: avisos-
+      - run: python avisos/avisos.py
+        env:
+          VAPID_PRIVATE: ${{ secrets.VAPID_PRIVATE }}
+          VAPID_EMAIL: ${{ secrets.VAPID_EMAIL }}
+          PUSH_SUBS: ${{ secrets.PUSH_SUBS }}
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHATS: ${{ secrets.TG_CHATS }}
+          SITE: https://rafaelraio.github.io/fila-clube/
+          HORA: ${{ github.event.inputs.hora }}
+          TESTE: ${{ github.event.inputs.teste }}
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: .avisos-estado
+          key: avisos-${{ github.run_id }}
