@@ -1,8 +1,27 @@
 {
  "semana": "2026-W44",
- "gerado_em": "2026-10-29T01:17-03:00",
+ "gerado_em": "2026-10-29T16:56-03:00",
  "fuso": "America/Sao_Paulo",
  "itens": [
+  {
+   "id": "2026-10-29-grade-proprio",
+   "tipo": "grade",
+   "clube": "proprio",
+   "clube_nome": "Royal Flush HG",
+   "data": "2026-10-29",
+   "enviar_as": "09:00",
+   "titulo": "Grade do dia · Royal Flush HG",
+   "resumo": "20h Freezout 8K",
+   "texto_whatsapp": "🔥 GRADE DE HOJE NO ROYAL FLUSH HG ∘ QUINTA-FEIRA 29/10\n\n📲 Online no PPPoker ∘ ID do clube 2862166\n\n🏆 20h ∘ Freezout ∘ 8K garantidos ∘ buy-in R$ 250 ∘ sem reentry; ranking dos freezouts (1 tablet)\n\nBora, família! 👊🏻",
+   "legenda_instagram": "🔥 Grade de hoje no Royal Flush HG, quinta-feira 29/10.\n\n20h Freezout 8K\n\nChama no direct para entrar. 📲\n\n#543pokerclub #royalflushhg #poker #pokeronline #pppoker #pokerbrasil",
+   "imagens": [
+    "img/2026-W44/2026-10-29-grade-proprio-feed.png",
+    "img/2026-W44/2026-10-29-grade-proprio-story.png"
+   ],
+   "principais": [
+    "Freezout"
+   ]
+  },
   {
    "id": "2026-10-29-grade-super",
    "tipo": "grade",
@@ -61,6 +80,25 @@
    ],
    "principais": [
     "Explore WS3P"
+   ]
+  },
+  {
+   "id": "2026-10-29-lembrete-proprio-20h",
+   "tipo": "lembrete",
+   "clube": "proprio",
+   "clube_nome": "Royal Flush HG",
+   "data": "2026-10-29",
+   "enviar_as": "19:00",
+   "hora_torneio": "20h",
+   "titulo": "Freezout 8K · 20h · Royal Flush HG",
+   "resumo": "Começa às 20h",
+   "texto_whatsapp": "⏰ FALTA 1 HORA, FAMÍLIA!\n\n🏆 Freezout ∘ 8K garantidos\n🕗 Hoje às 20h no Royal Flush HG (ID do clube 2862166)\n💰 Buy-in R$ 250 ∘ sem reentry; Ranking dos Freezouts (1 tablet)\n\nBora buscar essa! 👊🏻",
+   "legenda_instagram": "",
+   "imagens": [
+    "img/2026-W44/2026-10-29-lembrete-proprio-20h.png"
+   ],
+   "principais": [
+    "Freezout"
    ]
   },
   {
