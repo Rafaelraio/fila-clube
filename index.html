@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="color-scheme" content="dark">
+<title>Fila do Clube</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap">
+<style>
+  /* layout: uma coluna, cards empilhados por dia, barra fixa no topo com filtro */
+  :root {
+    --bg: #0A0A0A; --surface: #141210; --surface2: #1D1A12; --linha: #2A2619;
+    --ouro: #D1A845; --amarelo: #F2C84B; --verde: #39FF14; --creme: #F3EBD3;
+    --texto: #FFFFFF; --texto2: #CFC5A8; --ok: #6FCF97;
+    --fonte-titulo: 'Oswald', 'Arial Narrow', sans-serif;
+    --fonte: -apple-system, 'Helvetica Neue', Roboto, Arial, sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--texto); font-family: var(--fonte); }
+  body { padding-bottom: max(24px, env(safe-area-inset-bottom, 0px)); }
+  .topo { position: sticky; top: 0; z-index: 5; background: rgba(10,10,10,.96); backdrop-filter: blur(8px); border-bottom: 1px solid var(--linha);
+          padding: max(10px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); }
+  .topo-l { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  h1 { font-family: var(--fonte-titulo); font-weight: 700; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; margin: 0; }
+  .semana { font-size: 12px; color: var(--ouro); letter-spacing: .18em; text-transform: uppercase; }
+  .chips { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
+  .chip { border: 1px solid var(--ouro); color: var(--texto2); background: transparent; border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--amarelo); color: #000; border-color: var(--amarelo); }
+  main { padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); max-width: 720px; margin: 0 auto; }
+  .aviso { margin: 14px 0 0; padding: 12px 14px; border: 1px solid var(--linha); border-radius: 10px; background: var(--surface); font-size: 14px; color: var(--texto2); }
+  .aviso b { color: var(--texto); }
+  .dia { margin-top: 22px; }
+  .dia h2 { font-family: var(--fonte-titulo); font-weight: 500; font-size: 18px; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 10px; display: flex; align-items: baseline; gap: 10px; }
+  .dia h2 small { font-family: var(--fonte); font-size: 12px; color: var(--texto2); letter-spacing: 0; text-transform: none; }
+  .lista { display: flex; flex-direction: column; gap: 12px; }
+  .card { background: var(--surface); border: 1px solid var(--linha); border-radius: 12px; overflow: hidden; }
+  .card.agora { border-color: var(--amarelo); box-shadow: 0 0 0 1px var(--amarelo) inset; }
+  .card.enviado { opacity: .55; }
+  .card.alvo { outline: 2px solid var(--verde); }
+  .cab { display: flex; align-items: center; gap: 10px; padding: 12px 14px 0; }
+  .hora { font-family: var(--fonte-titulo); font-weight: 700; font-size: 24px; color: var(--amarelo); min-width: 64px; font-variant-numeric: tabular-nums; }
+  .clube { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 4px 8px; border-radius: 6px; }
+  .clube.super { background: var(--amarelo); color: #000; }
+  .clube.proprio { background: #123a12; color: var(--verde); border: 1px solid #1f6b1f; }
+  .tipo { font-size: 12px; color: var(--texto2); margin-left: auto; text-transform: uppercase; letter-spacing: .1em; }
+  .titulo { font-family: var(--fonte-titulo); font-weight: 500; font-size: 19px; padding: 6px 14px 0; line-height: 1.15; }
+  .resumo { font-size: 13px; color: var(--texto2); padding: 4px 14px 0; }
+  .corpo { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 12px 14px; align-items: start; }
+  .thumb { width: 96px; aspect-ratio: 1; object-fit: cover; border-radius: 8px; border: 1px solid var(--linha); background: #000; cursor: zoom-in; }
+  .thumb.story { aspect-ratio: 9/16; width: 72px; }
+  .texto { min-width: 0; font-size: 14px; line-height: 1.45; white-space: pre-wrap; color: var(--creme); max-height: 5.8em; overflow: hidden; position: relative; }
+  .texto.aberto { max-height: none; }
+  .vermais { background: none; border: 0; color: var(--ouro); font-size: 13px; padding: 0 14px 8px; cursor: pointer; }
+  .imgs { display: flex; gap: 6px; padding: 0 14px 6px; }
+  .imgs button { background: var(--surface2); border: 1px solid var(--linha); color: var(--texto2); border-radius: 6px; font-size: 12px; padding: 4px 8px; cursor: pointer; }
+  .imgs button[aria-pressed="true"] { border-color: var(--ouro); color: var(--amarelo); }
+  .acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 6px 14px 14px; }
+  .btn { border: 0; border-radius: 10px; padding: 12px 10px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: var(--fonte); display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; }
+  .btn:focus-visible { outline: 2px solid var(--verde); outline-offset: 2px; }
+  .btn.principal { background: var(--amarelo); color: #000; grid-column: 1 / -1; font-family: var(--fonte-titulo); font-size: 17px; letter-spacing: .04em; text-transform: uppercase; }
+  .btn.sec { background: var(--surface2); color: var(--texto); border: 1px solid var(--linha); }
+  .btn.ok { background: #16321f; color: var(--ok); border: 1px solid #245237; }
+  .vazio { color: var(--texto2); font-size: 14px; padding: 18px 0; }
+  .toast { position: fixed; left: 50%; bottom: max(20px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--creme); color: #000; padding: 10px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 9; max-width: 90vw; }
+  .toast.on { opacity: 1; }
+  .zoom { position: fixed; inset: 0; background: rgba(0,0,0,.92); display: none; align-items: center; justify-content: center; z-index: 8; padding: 20px; }
+  .zoom.on { display: flex; }
+  .zoom img { max-width: 100%; max-height: 100%; border-radius: 8px; }
+  .rodape { margin: 30px 0 10px; font-size: 12px; color: var(--texto2); text-align: center; }
+  .rodape button { background: none; border: 1px solid var(--linha); color: var(--texto2); border-radius: 999px; padding: 6px 12px; font-size: 12px; cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="topo-l">
+    <h1>Fila do Clube</h1>
+    <div class="semana" id="semana">carregando</div>
+  </div>
+  <div class="chips" role="group" aria-label="Filtro de clube">
+    <button class="chip" data-f="todos" aria-pressed="true">Todos</button>
+    <button class="chip" data-f="super">Grupo UP</button>
+    <button class="chip" data-f="proprio">Royal Flush HG</button>
+    <button class="chip" data-f="pendentes" aria-pressed="false">Só pendentes</button>
+  </div>
+</header>
+<main>
+  <div id="aviso" class="aviso" hidden></div>
+  <div id="conteudo"><div class="vazio">Carregando a fila da semana…</div></div>
+  <div class="rodape">
+    Horários de São Paulo. <span id="atualizado"></span><br>
+    <button id="btn-notif" hidden>Avisar neste aparelho</button>
+    <button id="btn-instalar" hidden>Instalar no celular</button>
+    <button id="btn-recarregar">Atualizar</button>
+  </div>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<div class="zoom" id="zoom"><img alt="" id="zoom-img"></div>
+<script>
+(function () {
+  var ESTADO = { filtro: 'todos', pendentes: false, enviados: {}, dados: null, imgSel: {} };
+  var DIAS = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  function ler(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  function gravar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  ESTADO.filtro = ler('filtro', 'todos'); ESTADO.pendentes = ler('pendentes', false); ESTADO.enviados = ler('enviados', {});
+
+  function agoraSP() {
+    var p = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date());
+    var o = {}; p.forEach(function (x) { o[x.type] = x.value; });
+    var h = o.hour === '24' ? '00' : o.hour;
+    return { data: o.year + '-' + o.month + '-' + o.day, min: parseInt(h, 10) * 60 + parseInt(o.minute, 10), hm: h + ':' + o.minute };
+  }
+  function minutos(hm) { var a = hm.split(':'); return parseInt(a[0], 10) * 60 + parseInt(a[1], 10); }
+  function diaSemana(iso) { var d = new Date(iso + 'T12:00:00'); return DIAS[d.getDay()] + ' ' + iso.slice(8, 10) + '/' + iso.slice(5, 7); }
+  function toast(msg) { var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(function () { t.classList.remove('on'); }, 2200); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function imagemDe(it) {
+    var sel = ESTADO.imgSel[it.id];
+    if (sel && it.imagens.indexOf(sel) >= 0) return sel;
+    var feed = it.imagens.filter(function (i) { return /-feed\.png$/.test(i); })[0];
+    return feed || it.imagens[0] || null;
+  }
+
+  function render() {
+    var d = ESTADO.dados; if (!d) return;
+    var sp = agoraSP();
+    document.getElementById('semana').textContent = 'Semana ' + d.semana;
+    document.getElementById('atualizado').textContent = 'Fila gerada em ' + d.gerado_em.replace('T', ' ').slice(0, 16) + '.';
+    document.querySelectorAll('.chip').forEach(function (c) {
+      var f = c.getAttribute('data-f');
+      c.setAttribute('aria-pressed', f === 'pendentes' ? String(ESTADO.pendentes) : String(ESTADO.filtro === f));
+    });
+    var itens = d.itens.filter(function (it) { return ESTADO.filtro === 'todos' || it.clube === ESTADO.filtro; });
+    if (ESTADO.pendentes) itens = itens.filter(function (it) { return !ESTADO.enviados[it.id] && (it.data > sp.data || (it.data === sp.data && minutos(it.enviar_as) >= sp.min - 90)); });
+    var porDia = {}; itens.forEach(function (it) { (porDia[it.data] = porDia[it.data] || []).push(it); });
+    var dias = Object.keys(porDia).sort();
+    var futuros = dias.filter(function (x) { return x >= sp.data; }), passados = dias.filter(function (x) { return x < sp.data; });
+    var html = '';
+    if (!dias.length) html = '<div class="vazio">Nada na fila com esse filtro.</div>';
+    futuros.concat(passados.reverse()).forEach(function (dia) {
+      var hoje = dia === sp.data;
+      html += '<section class="dia"><h2>' + (hoje ? 'Hoje' : diaSemana(dia)) + ' <small>' + (hoje ? diaSemana(dia) : (dia < sp.data ? 'passado' : '')) + '</small></h2><div class="lista">';
+      porDia[dia].sort(function (a, b) { return minutos(a.enviar_as) - minutos(b.enviar_as); }).forEach(function (it) {
+        var env = ESTADO.enviados[it.id];
+        var m = minutos(it.enviar_as);
+        var agora = hoje && !env && m <= sp.min + 60 && m >= sp.min - 45;
+        var img = imagemDe(it);
+        var story = img && /story/.test(img);
+        html += '<article class="card' + (agora ? ' agora' : '') + (env ? ' enviado' : '') + '" id="' + esc(it.id) + '">' +
+          '<div class="cab"><div class="hora">' + esc(it.enviar_as) + '</div><span class="clube ' + esc(it.clube) + '">' + (it.clube === 'super' ? 'UP' : 'HG') + '</span><span class="tipo">' + (it.tipo === 'grade' ? 'Grade do dia' : 'Lembrete') + (agora ? ' · agora' : '') + '</span></div>' +
+          '<div class="titulo">' + esc(it.titulo) + '</div>' + (it.resumo ? '<div class="resumo">' + esc(it.resumo) + '</div>' : '') +
+          '<div class="corpo">' + (img ? '<img class="thumb' + (story ? ' story' : '') + '" src="' + esc(img) + '" alt="arte" loading="lazy" data-zoom="' + esc(img) + '">' : '<div></div>') +
+          '<div class="texto" id="t-' + esc(it.id) + '">' + esc(it.texto_whatsapp) + '</div></div>' +
+          '<button class="vermais" data-vermais="' + esc(it.id) + '">ver texto inteiro</button>' +
+          (it.imagens.length > 1 ? '<div class="imgs">' + it.imagens.map(function (i) { return '<button data-img="' + esc(it.id) + '|' + esc(i) + '" aria-pressed="' + (i === img) + '">' + (/story/.test(i) ? 'story' : 'feed') + '</button>'; }).join('') + '</div>' : '') +
+          '<div class="acoes">' +
+            '<button class="btn principal" data-share="' + esc(it.id) + '">Compartilhar' + (img ? ' imagem + texto' : ' texto') + '</button>' +
+            '<button class="btn sec" data-copiar="' + esc(it.id) + '">Copiar texto</button>' +
+            '<a class="btn sec" href="https://wa.me/?text=' + encodeURIComponent(it.texto_whatsapp) + '" target="_blank" rel="noopener">WhatsApp só texto</a>' +
+            '<button class="btn ' + (env ? 'ok' : 'sec') + '" data-enviado="' + esc(it.id) + '">' + (env ? 'Enviado ✓ (desfazer)' : 'Marcar enviado') + '</button>' +
+          '</div></article>';
+      });
+      html += '</div></section>';
+    });
+    document.getElementById('conteudo').innerHTML = html;
+    if (location.hash) { var alvo = document.getElementById(location.hash.slice(1)); if (alvo) { alvo.classList.add('alvo'); alvo.scrollIntoView({ block: 'center' }); } }
+  }
+
+  function item(id) { return ESTADO.dados.itens.filter(function (i) { return i.id === id; })[0]; }
+  function marcar(id, v) { if (v) ESTADO.enviados[id] = new Date().toISOString(); else delete ESTADO.enviados[id]; gravar('enviados', ESTADO.enviados); render(); }
+
+  async function copiar(texto) {
+    try { await navigator.clipboard.writeText(texto); toast('Texto copiado'); return true; }
+    catch (e) {
+      var ta = document.createElement('textarea'); ta.value = texto; document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand('copy'); } catch (x) {}
+      document.body.removeChild(ta); toast(ok ? 'Texto copiado' : 'Não deu para copiar; selecione o texto'); return ok;
+    }
+  }
+
+  async function compartilhar(it) {
+    var img = imagemDe(it);
+    var texto = it.texto_whatsapp;
+    if (!navigator.share) { await copiar(texto); if (img) window.open(img, '_blank'); toast('Sem compartilhar neste navegador: texto copiado'); return; }
+    try {
+      if (img) {
+        var r = await fetch(img); var blob = await r.blob();
+        var file = new File([blob], img.split('/').pop(), { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], text: texto, title: it.titulo });
+          marcar(it.id, true); toast('Compartilhado'); return;
+        }
+      }
+      await copiar(texto);
+      await navigator.share({ text: texto, title: it.titulo });
+      marcar(it.id, true); toast('Compartilhado (texto). Imagem: toque nela e salve.');
+    } catch (e) {
+      if (e && e.name === 'AbortError') return;
+      await copiar(texto); toast('Compartilhar falhou; texto copiado');
+    }
+  }
+
+  document.addEventListener('click', async function (ev) {
+    var b = ev.target.closest('[data-f],[data-share],[data-copiar],[data-enviado],[data-vermais],[data-img],[data-zoom]');
+    if (!b) { if (ev.target.id === 'zoom' || ev.target.id === 'zoom-img') document.getElementById('zoom').classList.remove('on'); return; }
+    var id;
+    if (b.hasAttribute('data-f')) {
+      var f = b.getAttribute('data-f');
+      if (f === 'pendentes') { ESTADO.pendentes = !ESTADO.pendentes; gravar('pendentes', ESTADO.pendentes); }
+      else { ESTADO.filtro = f; gravar('filtro', f); }
+      render(); return;
+    }
+    if ((id = b.getAttribute('data-share'))) return compartilhar(item(id));
+    if ((id = b.getAttribute('data-copiar'))) return copiar(item(id).texto_whatsapp);
+    if ((id = b.getAttribute('data-enviado'))) return marcar(id, !ESTADO.enviados[id]);
+    if ((id = b.getAttribute('data-vermais'))) { var t = document.getElementById('t-' + id); t.classList.toggle('aberto'); b.textContent = t.classList.contains('aberto') ? 'esconder' : 'ver texto inteiro'; return; }
+    if (b.hasAttribute('data-img')) { var p = b.getAttribute('data-img').split('|'); ESTADO.imgSel[p[0]] = p[1]; render(); return; }
+    if (b.hasAttribute('data-zoom')) { document.getElementById('zoom-img').src = b.getAttribute('data-zoom'); document.getElementById('zoom').classList.add('on'); }
+  });
+
+  async function carregar() {
+    try {
+      var r = await fetch('data/atual.json?t=' + Date.now(), { cache: 'no-store' });
+      ESTADO.dados = await r.json();
+      try { localStorage.setItem('dados', JSON.stringify(ESTADO.dados)); } catch (e) {}
+    } catch (e) {
+      ESTADO.dados = ler('dados', null);
+      var av = document.getElementById('aviso'); av.hidden = false; av.innerHTML = '<b>Sem conexão.</b> Mostrando a última fila salva neste aparelho.';
+      if (!ESTADO.dados) { document.getElementById('conteudo').innerHTML = '<div class="vazio">Não deu para carregar a fila. Tente de novo com internet.</div>'; return; }
+    }
+    render();
+    agendarAvisos();
+  }
+  document.getElementById('btn-recarregar').addEventListener('click', carregar);
+
+  // avisos locais enquanto a página estiver aberta (o Telegram cobre o resto)
+  var bn = document.getElementById('btn-notif');
+  if ('Notification' in window) { bn.hidden = Notification.permission === 'granted'; bn.addEventListener('click', async function () { var p = await Notification.requestPermission(); bn.hidden = p === 'granted'; agendarAvisos(); }); }
+  var timers = [];
+  function agendarAvisos() {
+    timers.forEach(clearTimeout); timers = [];
+    if (!('Notification' in window) || Notification.permission !== 'granted' || !ESTADO.dados) return;
+    var sp = agoraSP();
+    ESTADO.dados.itens.filter(function (it) { return it.data === sp.data && !ESTADO.enviados[it.id] && minutos(it.enviar_as) > sp.min; }).forEach(function (it) {
+      timers.push(setTimeout(function () { try { new Notification('Hora de postar · ' + it.enviar_as, { body: it.titulo, icon: 'icon-192.png', tag: it.id }); } catch (e) {} }, (minutos(it.enviar_as) - sp.min) * 60000));
+    });
+  }
+
+  var deferred = null, bi = document.getElementById('btn-instalar');
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; bi.hidden = false; });
+  bi.addEventListener('click', function () { if (deferred) { deferred.prompt(); deferred = null; bi.hidden = true; } });
+  if ('serviceWorker' in navigator) { try { navigator.serviceWorker.register('sw.js'); } catch (e) {} }
+  window.addEventListener('hashchange', render);
+  carregar();
+})();
+</script>
+</body>
+</html>
